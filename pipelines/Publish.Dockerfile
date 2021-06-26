@@ -15,5 +15,4 @@ COPY --from=build /output .
 
 ARG BUILD_NUMBER
 
-ENTRYPOINT [ "dotnet", "FoodTrack.Grpc.dll" ]
-EXPOSE 443   
+ENTRYPOINT [ "dotnet", "FoodTrack.Grpc.dll" ]  

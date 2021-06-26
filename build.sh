@@ -5,6 +5,8 @@ export BUILD_NUMBER=$RANDOM
 export IMAGE=foodtrackgrpc
 export IMAGE_BASE_NAME=foodtrackgrpc
 
+docker network create web
+
 docker build . \
     --file pipelines/Build.Dockerfile \
     --tag $IMAGE_BASE_NAME-base:$BUILD_NUMBER
@@ -26,4 +28,4 @@ docker-compose \
     --detach \
     --remove-orphans
 
-# read varname
+read varname
