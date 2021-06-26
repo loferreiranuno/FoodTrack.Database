@@ -3,14 +3,19 @@ services:
   foodtrack-db:
     image: ${IMAGE}
     ports: 
-        - 5300:443
+        - 5301:443
+        - 5300:80
     restart: always 
     networks:
       - web
     labels:          
       - traefik.enable=true
       # - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https
-      # - traefik.backend=foodtrack-db      
+      # - traefik.backend=foodtrack-searchengine
+      - traefik.http.routers.kcenar-database.service=foodtrack-db
+      - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
+      - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
+      - traefik.http.services.foodtrack-db.loadbalancer.servers.url=h2c://db.qcenar.com:5300
       # - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
       # - traefik.http.routers.kcenar-database.entrypoints=web
       # - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
@@ -19,11 +24,8 @@ services:
       # - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
       # - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
       # - traefik.http.routers.kcenar-database-websecure.tls=true
-      - traefik.protocol=h2c
-      - traefik.backend=foodtrack-db
-      - traefik.frontend.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
-      - traefik.docker.network=web
-      - traefik.port=5300
+      # - traefik.http.services.kcenar-database.loadbalancer.server.scheme=h2c
+      # - traefik.docker.network=web
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
@@ -36,8 +38,6 @@ services:
       - ./postgres_data:/var/lib/postgresql
     ports:
       - 5432:5432
-    networks:
-      - web
 networks:
   web:
     external: true
