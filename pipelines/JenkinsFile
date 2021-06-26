@@ -20,7 +20,7 @@ node('docker-slave') {
     stage('checkout') {
         checkout([
             $class: 'GitSCM', 
-            branches: [[name: 'origin/master']], 
+            branches: [[name: 'origin/main']], 
             doGenerateSubmoduleConfigurations: false, 
             extensions: [
                 [$class: 'CheckoutOption', timeout: 120],
@@ -82,4 +82,4 @@ node('docker-slave') {
                 --remove-orphans
         """)
     }
-}}}
+}}} 
