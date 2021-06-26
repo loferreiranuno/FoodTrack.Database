@@ -49,15 +49,6 @@ node('docker-slave') {
             --tag $IMAGE_NAME-base:$BUILD_NUMBER
         """)
     }
-
-    stage('test') {
-        sh(script: """
-            docker run \\
-                --rm \\
-                $IMAGE_NAME-base:$BUILD_NUMBER \\
-                bash -c pipelines/test.sh
-        """) 
-    }
     
     stage('publish') {
         sh(script: """
