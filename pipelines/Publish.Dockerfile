@@ -7,15 +7,13 @@ RUN dotnet publish \
         --output /output
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0
+ENV ASPNETCORE_URLS=https://+:443
 
 WORKDIR /app
-
-# ENV ASPNETCORE_URLS=https://+:443
 
 COPY --from=build /output .
 
 ARG BUILD_NUMBER
 
 ENTRYPOINT [ "dotnet", "FoodTrack.Grpc.dll" ]
-EXPOSE 443  
-EXPOSE 80  
+EXPOSE 443   
