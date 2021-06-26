@@ -10,22 +10,19 @@ services:
       - web
     labels:          
       - traefik.enable=true
-      # - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https
-      # - traefik.backend=foodtrack-searchengine
-      - traefik.http.routers.kcenar-database.service=foodtrack-db
-      - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
-      - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
-      - traefik.http.services.foodtrack-db.loadbalancer.servers.url=h2c://db.qcenar.com:5300
-      # - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
-      # - traefik.http.routers.kcenar-database.entrypoints=web
-      # - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
-      
-      # - traefik.http.routers.kcenar-database-websecure.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
-      # - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
-      # - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
-      # - traefik.http.routers.kcenar-database-websecure.tls=true
-      # - traefik.http.services.kcenar-database.loadbalancer.server.scheme=h2c
-      # - traefik.docker.network=web
+      - traefik.backend=foodtrack-searchengine
+      - traefik.docker.network=web
+      - traefik.http.services.foodtrack-db.loadbalancer.servers.url=https://db.qcenar.com:5300
+      - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https      
+      - traefik.http.routers.kcenar-database.service:foodtrack-db
+      - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
+      - traefik.http.routers.kcenar-database.entrypoints=web
+      - traefik.http.routers.kcenar-database.rule=Host(`db.qcenar.com`)      
+      - traefik.http.routers.kcenar-database-websecure.rule=Host(`db.qcenar.com`)
+      - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
+      - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
+      - traefik.http.routers.kcenar-database-websecure.tls=true
+      - traefik.http.routers.kcenar-database-websecure.service:foodtrack-db     
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
