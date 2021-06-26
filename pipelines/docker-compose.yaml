@@ -6,6 +6,22 @@ services:
         - 5301:443
         - 5300:80
     restart: always 
+    networks:
+      - web
+    labels:          
+      - traefik.enable=true
+      - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https
+      - traefik.backend=foodtrack-searchengine
+      
+      - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
+      - traefik.http.routers.kcenar-database.entrypoints=web
+      - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
+      
+      - traefik.http.routers.kcenar-database-websecure.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
+      - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
+      - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
+      - traefik.http.routers.kcenar-database-websecure.tls=true
+      - traefik.docker.network=web
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
@@ -18,17 +34,10 @@ services:
       - ./postgres_data:/var/lib/postgresql
     ports:
       - 5432:5432
-# version: '3'
-# services:
-#   foodtrack-database:
-#     image: "postgres" # use latest official postgres version
-#     # env_file:
-#     #   - database.env # configure postgres
-#     environment: 
-#         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#         POSTGRES_USER: ${POSTGRES_USER} 
-#         PGDATA: /var/lib/postgresql/data/pgdata
-#     volumes:
-#         - ${DATA}:/var/lib/postgresql
-#     ports:
-#         - 5432:5432
+    networks:
+      - web
+networks:
+  web:
+    external: true
+  internal:
+    external: false
