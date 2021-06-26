@@ -19,12 +19,11 @@ services:
       # - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
       # - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
       # - traefik.http.routers.kcenar-database-websecure.tls=true
-      - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
-      - traefik.http.routers.kcenar-database.entrypoints=grpc
-      - traefik.http.routers.kcenar-database.tls=true
-      - traefik.http.routers.kcenar-database.tls.certresolver=le
-      - traefik.http.services.grpc-svc.loadbalancer.server.scheme=h2c
+      - traefik.protocol=h2c
+      - traefik.backend=foodtrack-db
+      - traefik.frontend.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
       - traefik.docker.network=web
+      - traefik.port=5300
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
