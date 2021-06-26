@@ -10,8 +10,7 @@ services:
     labels:          
       - traefik.enable=true
       - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https
-      - traefik.backend=foodtrack-searchengine
-      
+      - traefik.backend=foodtrack-db      
       - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
       - traefik.http.routers.kcenar-database.entrypoints=web
       - traefik.http.routers.kcenar-database.rule=Host(`db.kcenar.com`) || Host(`db.qcenar.com`)
