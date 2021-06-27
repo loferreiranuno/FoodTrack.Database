@@ -9,29 +9,13 @@ services:
     networks:
       - web
     labels:          
-    - traefik.enable=true
-    - traefik.docker.network=web
-    # Public segment
-    - traefik.public.protocol=h2c
-    - traefik.public.port=5300
-    - traefik.public.frontend.rule=Host(`db.qcenar.com`)
-    - traefik.public.frontend.auth.forward.tls.insecureSkipVerify=true
-    - traefik.public.backend.loadbalancer.method=drr
-    - traefik.public.frontend.passHostHeader=true
-      # - traefik.enable=true
-      # - traefik.backend=foodtrack-searchengine
-      # - traefik.docker.network=web
-      # - traefik.http.services.foodtrack-db.loadbalancer.servers.url=https://db.qcenar.com:5300
-      # - traefik.http.middlewares.kcenar-database-redirect-websecure.redirectscheme.scheme=https      
-      # - traefik.http.routers.kcenar-database.service:foodtrack-db
-      # - traefik.http.routers.kcenar-database.middlewares=kcenar-database-redirect-websecure
-      # - traefik.http.routers.kcenar-database.entrypoints=web
-      # - traefik.http.routers.kcenar-database.rule=Host(`db.qcenar.com`)      
-      # - traefik.http.routers.kcenar-database-websecure.rule=Host(`db.qcenar.com`)
-      # - traefik.http.routers.kcenar-database-websecure.entrypoints=websecure
-      # - traefik.http.routers.kcenar-database-websecure.tls.certresolver=le
-      # - traefik.http.routers.kcenar-database-websecure.tls=true
-      # - traefik.http.routers.kcenar-database-websecure.service:foodtrack-db     
+    - traefik.http.routers.foodtrack-grpc.rule=Host(`db.qcenar.com`)
+    - traefik.http.routers.foodtrack-grpc.entrypoints=grpc
+    - traefik.http.routers.foodtrack-grpc.tls=true
+    - traefik.http.routers.foodtrack-grpc.tls.certresolver=le
+    - traefik.http.services.foodtrack-grpc.loadbalancer.server.scheme=h2c
+    # - traefik.enable=true
+    # - traefik.docker.network=web   
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
@@ -41,7 +25,7 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_DB=foodtrack
     volumes:
-      - ./postgres_data:/var/lib/postgresql
+      - ${DATA}/postgres_data:/var/lib/postgresql
     ports:
       - 5432:5432
 networks:

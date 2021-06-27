@@ -1,6 +1,6 @@
 export POSTGRES_PASSWORD="admin"
 export POSTGRES_USER="admin"
-export DATA="$(pwd)/data/" 
+export DATA="./data/" 
 export BUILD_NUMBER=$RANDOM
 export IMAGE=foodtrackgrpc
 export IMAGE_BASE_NAME=foodtrackgrpc
