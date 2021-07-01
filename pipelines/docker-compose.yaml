@@ -8,13 +8,14 @@ services:
     networks:
       - web
     labels:          
-    - traefik.http.routers.foodtrack-grpc.rule=Host(`db.qcenar.com`)
-    - traefik.http.routers.foodtrack-grpc.entrypoints=grpc
-    - traefik.http.routers.foodtrack-grpc.tls=true
-    - traefik.http.routers.foodtrack-grpc.tls.certresolver=le
-    - traefik.http.services.foodtrack-grpc.loadbalancer.server.scheme=h2c
-    # - traefik.enable=true
-    # - traefik.docker.network=web   
+    - traefik.http.routers.foodtrack-db.rule=Host(`db.qcenar.com`)
+    - traefik.http.routers.foodtrack-db.entrypoints=grpc
+    - traefik.http.routers.foodtrack-db.tls=true
+    - traefik.http.routers.foodtrack-db.tls.certresolver=le
+    - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
+    - traefik.enable=true
+    - traefik.docker.network=web 
+    - traefik.port=9000  
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
