@@ -17,11 +17,11 @@ namespace src
             services
                 .AddGrpc();
 
-            services
-                .AddResponseCompression(opts =>
-                {
-                    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
-                });
+            // services
+            //     .AddResponseCompression(opts =>
+            //     {
+            //         opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+            //     });
 
             services
                 .AddCors(o =>
