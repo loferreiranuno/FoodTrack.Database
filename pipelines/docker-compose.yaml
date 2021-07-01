@@ -2,9 +2,8 @@ version: '3'
 services:
   foodtrack-db:
     image: ${IMAGE}
-    ports: 
-        - 5301:443
-        - 5300:80
+    ports:
+        - 5300:9000
     restart: always 
     networks:
       - web
