@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,7 +14,30 @@ namespace src
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
+            services
+                .AddGrpc();
+
+            services
+                .AddResponseCompression(opts =>
+                {
+                    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
+                });
+
+            services
+                .AddCors(o =>
+                    o.AddPolicy("AllowAll", builder =>
+                    {
+                        builder
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowAnyOrigin()
+                            .WithExposedHeaders(
+                                "Grpc-Status",
+                                "Grpc-Message",
+                                "Grpc-Encoding",
+                                "Grpc-Accept-Encoding");
+                    }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -24,10 +49,15 @@ namespace src
             }
 
             app.UseRouting();
+            app.UseGrpcWeb();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints
+                    .MapGrpcService<GreeterService>()
+                    .EnableGrpcWeb()
+                    .RequireCors("AllowAll");
 
                 endpoints.MapGet("/", async context =>
                 {
