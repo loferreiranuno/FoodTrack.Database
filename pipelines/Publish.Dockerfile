@@ -7,6 +7,7 @@ RUN dotnet publish \
         --output /output
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0
+
 ENV ASPNETCORE_URLS=https://+:443
 
 WORKDIR /app
