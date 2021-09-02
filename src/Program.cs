@@ -19,12 +19,6 @@ namespace FoodTrack.Database
                 .ConfigureWebHostDefaults(webBuilder =>
                 { 
                     webBuilder.UseKestrel(options => {
-                        options.Listen(IPAddress.Any, 443, listenOptions => {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
-                        options.Listen(IPAddress.Any, 80, listenOptions => {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
                         options.Listen(IPAddress.Any, 5300, listenOptions => {
                             listenOptions.Protocols = HttpProtocols.Http2;
                         });
