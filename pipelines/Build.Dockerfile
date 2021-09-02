@@ -9,7 +9,7 @@ EXPOSE 80
 WORKDIR /src
 
 COPY ./FoodTrack.Database.sln ./FoodTrack.Database.sln
-COPY ./src/FoodTrack.Grpc.csproj ./src/FoodTrack.Grpc.csproj
+COPY ./src/FoodTrack.Database.csproj ./src/FoodTrack.Database.csproj
 
 RUN dotnet restore
 
