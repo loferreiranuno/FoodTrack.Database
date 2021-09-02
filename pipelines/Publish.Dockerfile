@@ -15,4 +15,4 @@ COPY --from=build /output .
 
 ARG BUILD_NUMBER
 
-ENTRYPOINT [ "dotnet", "FoodTrack.Grpc.dll" ]  
+ENTRYPOINT [ "dotnet", "FoodTrack.Database.dll" ]  
