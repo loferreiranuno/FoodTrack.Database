@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "src";
+option csharp_namespace = "FoodTrack.Database";
 
 package greet;
 

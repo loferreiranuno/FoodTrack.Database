@@ -1,8 +1,9 @@
+using System.Net;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace src
+namespace FoodTrack.Database
 {
     public class Program
     {
@@ -17,10 +18,8 @@ namespace src
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 { 
-                    webBuilder.ConfigureKestrel(options =>
-                    {
-                        options.Listen(IPAddress.Any, 9000, listenOptions =>
-                        {
+                    webBuilder.UseKestrel(options => {
+                        options.Listen(IPAddress.Any, 9000, listenOptions => {
                             listenOptions.Protocols = HttpProtocols.Http2;
                         });
                     });
