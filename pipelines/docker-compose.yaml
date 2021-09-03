@@ -31,7 +31,6 @@ services:
       - traefik.http.routers.foodtrack-db-grpc.tls=true
       - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le
 
-
       - traefik.docker.network=web
   foodtrack-postgres:
     image: postgres 
