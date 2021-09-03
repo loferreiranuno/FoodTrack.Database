@@ -2,7 +2,7 @@ version: '3'
 services:
   foodtrack-db:
     image: ${IMAGE}
-    expose:
+    ports:
       - 5300:5301
     restart: on-failure 
     networks:
