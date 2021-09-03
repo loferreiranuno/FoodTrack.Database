@@ -3,23 +3,29 @@ services:
   foodtrack-db:
     image: ${IMAGE}
     ports:
-      - 5300:5301
+      - 5300:5333
     restart: on-failure 
     networks:
       - web
     labels:
-      - traefik.enable=true
-      - traefik.backend=foodtrack-db 
-      - traefik.docker.network=web
-
-      - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.scheme=h2c 
-      - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.port=5301
-
-      - traefik.http.routers.foodtrack-db-grpc.rule=Host(`db.qcenar.com`)
-      - traefik.http.routers.foodtrack-db-grpc.entrypoints=grpc
+      - traefik.http.routers.foodtrack-grpc.entrypoints=grpc
+      - traefik.http.routers.foodtrack-grpc.rule=Host(`db.qcenar.com`)
       - traefik.http.routers.foodtrack-db-grpc.tls=true
       - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le
-      - traefik.port=5301
+      - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
+      - traefik.docker.network=web 
+      # - traefik.enable=true
+      # - traefik.backend=foodtrack-db 
+      # - traefik.docker.network=web
+
+      # - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.scheme=h2c 
+      # - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.port=5301
+
+      # - traefik.http.routers.foodtrack-db-grpc.rule=Host(`db.qcenar.com`)
+      # - traefik.http.routers.foodtrack-db-grpc.entrypoints=grpc
+      # - traefik.http.routers.foodtrack-db-grpc.tls=true
+      # - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le
+      # - traefik.port=5301
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
