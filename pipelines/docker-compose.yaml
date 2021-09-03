@@ -9,14 +9,29 @@ services:
       - web
     labels:
       - traefik.enable=true
-      - traefik.backend=foodtrack-db
-      - traefik.http.middlewares.foodtrack-db-grpc.redirectscheme.scheme=h2c      
-      - traefik.http.routers.foodtrack-db.rule=Host(`db.qcenar.com`)
-      - traefik.http.routers.foodtrack-db.entrypoints=grpc
-      - traefik.http.routers.foodtrack-db.tls=true
-      - traefik.http.routers.foodtrack-db.tls.certresolver=le
+      - traefik.backend=foodtrack-db 
+
       - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c 
       - traefik.http.services.foodtrack-db.loadbalancer.server.port=9000
+
+      - traefik.http.middlewares.foodtrack-db-redirect-grpc.redirectscheme.scheme=h2c
+
+      - traefik.http.routers.foodtrack-db-web.middlewares=foodtrack-db-redirect-grpc
+      - traefik.http.routers.foodtrack-db-web.entrypoints=web
+      - traefik.http.routers.foodtrack-db-web.rule=Host(`db.qcenar.com`)
+      
+      - traefik.http.routers.foodtrack-db-websecure.middlewares=foodtrack-db-redirect-grpc
+      - traefik.http.routers.foodtrack-db-websecure.entrypoints=websecure
+      - traefik.http.routers.foodtrack-db-websecure.rule=Host(`db.qcenar.com`) 
+      - traefik.http.routers.foodtrack-db-websecure.tls=true
+      - traefik.http.routers.foodtrack-db-websecure.tls.certresolver=le     
+
+      - traefik.http.routers.foodtrack-db-grpc.rule=Host(`db.qcenar.com`)
+      - traefik.http.routers.foodtrack-db-grpc.entrypoints=grpc
+      - traefik.http.routers.foodtrack-db-grpc.tls=true
+      - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le
+
+
       - traefik.docker.network=web
   foodtrack-postgres:
     image: postgres 
