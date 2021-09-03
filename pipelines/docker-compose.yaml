@@ -3,7 +3,7 @@ services:
   foodtrack-db:
     image: ${IMAGE}
     expose:
-      - 5300
+      - 5300:5301
     restart: on-failure 
     networks:
       - web
@@ -13,13 +13,12 @@ services:
       - traefik.docker.network=web
 
       - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.scheme=h2c 
-      - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.port=9000
+      - traefik.http.services.foodtrack-db-grpc.loadbalancer.server.port=5301
 
       - traefik.http.routers.foodtrack-db-grpc.rule=Host(`db.qcenar.com`)
       - traefik.http.routers.foodtrack-db-grpc.entrypoints=grpc
       - traefik.http.routers.foodtrack-db-grpc.tls=true
-      - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le
-      - traefik.port=5300
+      - traefik.http.routers.foodtrack-db-grpc.tls.certresolver=le 
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
