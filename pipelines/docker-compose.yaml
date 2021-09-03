@@ -15,8 +15,8 @@ services:
       - traefik.http.routers.foodtrack-db.entrypoints=grpc
       - traefik.http.routers.foodtrack-db.tls=true
       - traefik.http.routers.foodtrack-db.tls.certresolver=le
-      - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
-      - traefik.http.services.foodtrack-db.loadbalancer.servers.url=h2c://db.qcenar.com:5300
+      - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c 
+      - traefik.http.services.foodtrack-db.loadbalancer.server.port=9000
       - traefik.docker.network=web
   foodtrack-postgres:
     image: postgres 
