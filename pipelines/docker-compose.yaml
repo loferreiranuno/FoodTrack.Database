@@ -15,7 +15,7 @@ services:
     - traefik.http.services.foodtrack-db.loadbalancer.server.scheme=h2c
     - traefik.enable=true
     - traefik.docker.network=web 
-    - traefik.port=9000  
+    - traefik.port=5300  
   foodtrack-postgres:
     image: postgres 
     restart: on-failure
