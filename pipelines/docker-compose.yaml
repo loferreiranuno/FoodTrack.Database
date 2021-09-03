@@ -7,7 +7,7 @@ services:
     restart: on-failure 
     networks:
       - web
-    labels:
+    # labels:
       # - traefik.enable=true
       # - traefik.backend=foodtrack-db 
       # - traefik.docker.network=web
