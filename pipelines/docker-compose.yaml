@@ -2,8 +2,8 @@ version: '3'
 services:
   foodtrack-db:
     image: ${IMAGE}
-    expose:
-      - "5300"
+    posts:
+      - 5300:5300
     restart: on-failure 
     networks:
       - web
